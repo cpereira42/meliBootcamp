@@ -8,25 +8,43 @@ import (
 )
 
 func main() {
-	variavel := rand.Perm(100)
-	variavel2 := rand.Perm(1000)
-	variavel3 := rand.Perm(10000)
 
-	fmt.Println("Inseção")
-	orderInse(variavel)
-	orderInse(variavel2)
-	orderInse(variavel3)
+	c1 := make(chan int)
+	c2 := make(chan int)
+	c3 := make(chan int)
 
+	fmt.Println("inicia")
+	go checkInse(c1)
+	<-c1
+	go checkSort(c2, c1)
+	<-c2
+	go checkSel(c3, c2)
+	<-c3
+}
+func checkInse(out chan<- int) {
+	fmt.Println("\nInseção")
+	orderInse(rand.Perm(100))
+	orderInse(rand.Perm(1000))
+	orderInse(rand.Perm(10000))
+	out <- 1
+	close(out)
+}
+func checkSort(out chan<- int, in <-chan int) {
 	fmt.Println("\nSort")
-	ordeSort(variavel)
-	ordeSort(variavel2)
-	ordeSort(variavel3)
+	ordeSort(rand.Perm(100))
+	ordeSort(rand.Perm(1000))
+	ordeSort(rand.Perm(10000))
+	out <- 1
+	close(out)
+}
 
+func checkSel(out chan<- int, in <-chan int) {
 	fmt.Println("\nSeleçao")
-	orderSel(variavel)
-	orderSel(variavel2)
-	orderSel(variavel3)
-
+	orderSel(rand.Perm(100))
+	orderSel(rand.Perm(1000))
+	orderSel(rand.Perm(10000))
+	out <- 1
+	close(out)
 }
 
 func ordeSort(variavel []int) {
@@ -34,7 +52,6 @@ func ordeSort(variavel []int) {
 	sort.Ints(variavel)
 	tf := time.Now()
 	fmt.Printf("%s\n", tf.Sub(ti))
-
 }
 
 func orderSel(variavel []int) {
@@ -70,4 +87,11 @@ func orderInse(variavel []int) {
 	}
 	tf := time.Now()
 	fmt.Printf("%s\n", tf.Sub(ti))
+}
+
+func printArray(variavel []int) {
+	for _, num := range variavel {
+		fmt.Print(num, ",")
+	}
+	fmt.Print("\n")
 }
