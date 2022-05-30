@@ -1,0 +1,10 @@
+{
+    "id" : 4,
+    "nome" : "cezar",
+    "sobrenome": "augusto",
+    "email": "cezar.pereira@mercadolivre.com",
+    "idade" : 36,
+    "altura": 1.78,
+    "ativo": true,
+    "dataDeCriacao": "29/05/2022"
+}
