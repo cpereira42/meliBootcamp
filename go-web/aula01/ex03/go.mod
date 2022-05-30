@@ -1,4 +1,4 @@
-module github.com/cpereira42/web-serv
+module github.com/cpereira42/web-serv/ex03
 
 go 1.18
 
