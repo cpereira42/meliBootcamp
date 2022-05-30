@@ -61,7 +61,6 @@ func main() {
 	if err := json.Unmarshal([]byte(jsonData), &u); err != nil {
 		log.Fatal(err)
 	}
-	router.Keys("teste", "teste")
 	router.GET("GetAll", getAll(u))
 
 	router.Run()

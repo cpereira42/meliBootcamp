@@ -2,8 +2,10 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -38,33 +40,66 @@ func getName() string {
 
 func main() {
 
+	jsonData := `[{
+		"Id":5,
+		"Nome":"Cezar",
+		"SobreNome":"Augusto",
+		"Email":"cezar@gmasils",
+		"Idade":36,
+		"Altura":1.78,
+		"Ativo":true,
+		"DataCriacao":"55/10/2022"
+	},
+	{
+		"Nome":"Angélica",
+		"Id":6,
+		"SobreNome":"Miranda"}
+	]`
+
 	router := gin.Default()
 	router.GET("bem-vindo", printName)
-
-	jsonData := `[{
-					"Id":5,
-					"Nome":"Cezar",
-					"SobreNome":"Augusto",
-					"Email":"cezar@gmasils",
-					"Idade":36,
-					"Altura":1.78,
-					"Ativo":true,
-					"DataCriacao":"55/10/2022"
-				},
-				{
-					"Nome":"Angélica",
-					"Id":6,
-					"SobreNome":"Miranda"}
-		]`
 
 	var u []usuario
 	if err := json.Unmarshal([]byte(jsonData), &u); err != nil {
 		log.Fatal(err)
 	}
-	router.Keys("teste", "teste")
-	router.GET("GetAll", getAll(u))
+
+	group := router.Group("/usuarios")
+	{
+		group.GET("getall", getAll(u))
+		group.GET("getid/:id", getId(u))
+		group.GET("getnome/", getNome(u))
+	}
 
 	router.Run()
+}
+
+func getNome(u []usuario) gin.HandlerFunc {
+	fn := func(c *gin.Context) {
+		nome := c.Query("nome")
+		for _, pd := range u {
+			fmt.Println(pd.Nome)
+			if pd.Nome == nome {
+				c.JSON(200, pd)
+				break
+			}
+		}
+	}
+	return gin.HandlerFunc(fn)
+}
+
+func getId(u []usuario) gin.HandlerFunc {
+	fn := func(c *gin.Context) {
+		id, _ := strconv.Atoi(c.Param("id"))
+		for _, pd := range u {
+			if pd.Id == id {
+				c.JSON(200, pd)
+				return
+			}
+		}
+		c.JSON(404, "Id não encontrado")
+	}
+	return gin.HandlerFunc(fn)
 }
 
 func getAll(u []usuario) gin.HandlerFunc {
