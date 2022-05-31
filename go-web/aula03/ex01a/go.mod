@@ -1,4 +1,4 @@
-module github.com/cpereira42/meliBootcamp/go-web
+module github.com/meliBootcamp/go-web/aula03/ex01a
 
 go 1.18
 
