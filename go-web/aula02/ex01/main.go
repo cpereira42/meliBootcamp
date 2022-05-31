@@ -10,6 +10,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type Usuarios []usuario
+
 type usuario struct {
 	Id          int     `json:"id"`
 	Nome        string  `json:"nome"`
