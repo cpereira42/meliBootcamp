@@ -1,7 +1,9 @@
-package products
+package disc
 
 import (
 	"fmt"
+
+	"github.com/meliBootcamp/go-web/aula03/ex01a/pkg/store"
 )
 
 type Product struct {
@@ -24,24 +26,42 @@ type Repository interface {
 	Delete(id int) error
 }
 
-type repository struct{}
+type repository struct {
+	db store.Store
+}
 
-func NewRepository() Repository {
-	return &repository{}
+func NewRepository(db store.Store) Repository {
+	return &repository{
+		db: db,
+	}
 }
 
 func (r *repository) GetAll() ([]Product, error) {
+	var ps []Product
+	r.db.Read(&ps)
 	return ps, nil
 }
 
 func (r *repository) LastID() (int, error) {
-	return lastID, nil
+	var ps []Product
+	if err := r.db.Read(&ps); err != nil {
+		return 0, err
+	}
+	if len(ps) == 0 {
+		return 0, nil
+	}
+	return ps[len(ps)-1].ID, nil
 }
 
 func (r *repository) Store(id int, name, tipo string, count int, price float64) (Product, error) {
+	var ps []Product
+	r.db.Read(&ps)
 	p := Product{id, name, tipo, count, price}
 	ps = append(ps, p)
-	lastID = p.ID
+	if err := r.db.Write(ps); err != nil {
+		return Product{}, err
+	}
+	//lastID = p.ID
 	return p, nil
 }
 

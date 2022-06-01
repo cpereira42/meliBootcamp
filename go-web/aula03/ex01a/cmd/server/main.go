@@ -1,13 +1,32 @@
 package main
 
 import (
+	"log"
+
 	"github.com/gin-gonic/gin"
-	handler "github.com/meliBootcamp/go-web/aula03/ex01a/cmd/server/handler"
-	"github.com/meliBootcamp/go-web/aula03/ex01a/internal/products"
+	"github.com/joho/godotenv"
+	"github.com/meliBootcamp/go-web/aula03/ex01a/cmd/server/handler"
+	"github.com/meliBootcamp/go-web/aula03/ex01a/internal/products/repository/disc"
+	"github.com/meliBootcamp/go-web/aula03/ex01a/internal/products/repository/ram"
+	"github.com/meliBootcamp/go-web/aula03/ex01a/pkg/store"
 )
 
 func main() {
-	repo := products.NewRepository()
+
+	op := 1
+
+	if op == 1 {
+		err := godotenv.Load("../../.env")
+		if err != nil {
+			log.Fatal("Não foi possível abrir o log")
+		}
+
+		db := store.New(store.FileType, "../../products.json")
+		repo := disc.NewRepository(db)
+	} else {
+		repo := ram.NewRepository(db)
+	}
+
 	service := products.NewService(repo)
 	p := handler.NewProduct(service)
 	r := gin.Default()

@@ -1,4 +1,4 @@
-package products
+package service
 
 type Service interface {
 	GetAll() ([]Product, error)
