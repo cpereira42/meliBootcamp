@@ -12,5 +12,19 @@
   "tipo": "TV",
   "count": 5,
   "price": 5000
+ },
+ {
+  "id": 3,
+  "name": "rrr",
+  "tipo": "TV",
+  "count": 5,
+  "price": 5000
+ },
+ {
+  "id": 4,
+  "name": "rrr",
+  "tipo": "TV",
+  "count": 5,
+  "price": 5000
  }
 ]

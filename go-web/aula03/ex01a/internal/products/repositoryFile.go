@@ -1,4 +1,4 @@
-package disc
+package products
 
 import (
 	"fmt"
@@ -6,15 +6,7 @@ import (
 	"github.com/meliBootcamp/go-web/aula03/ex01a/pkg/store"
 )
 
-type Product struct {
-	ID    int     `json:"id"`
-	Name  string  `json:"name"`
-	Tipo  string  `json:"tipo"`
-	Count int     `json:"count"`
-	Price float64 `json:"price"`
-}
-
-var ps []Product
+var ps []Product = []Product{}
 var lastID int
 
 type Repository interface {

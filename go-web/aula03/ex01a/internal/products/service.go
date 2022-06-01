@@ -1,4 +1,4 @@
-package service
+package products
 
 type Service interface {
 	GetAll() ([]Product, error)
@@ -7,6 +7,7 @@ type Service interface {
 	UpdateName(id int, name string) (Product, error)
 	Delete(id int) error
 }
+
 type service struct {
 	repository Repository
 }
