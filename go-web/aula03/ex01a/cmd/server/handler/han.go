@@ -17,6 +17,10 @@ type request struct {
 	Price float64 `json:"price"`
 }
 
+type requestName struct {
+	Name string `json:"name"`
+}
+
 type Product struct {
 	service products.Service
 }
@@ -25,6 +29,17 @@ func NewProduct(p products.Service) *Product {
 	return &Product{service: p}
 }
 
+// ListProducts godoc
+// @Summary List products
+// @Tags Products
+// @Description get products
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Success 200 {object} request
+// @Failure 400 {object} web.Response "We need ID!!"
+// @Failure 404 {object} web.Response "Can not find ID"
+// @Router /products [get]
 func (c *Product) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.Request.Header.Get("token")
@@ -41,6 +56,18 @@ func (c *Product) GetAll() gin.HandlerFunc {
 	}
 }
 
+// StoreProducts godoc
+// @Summary Store products
+// @Tags Products
+// @Description store products
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Param product body request true "Product to store"
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.Response "We need ID!!"
+// @Failure 404 {object} web.Response "Can not find ID"
+// @Router /products [post]
 func (c *Product) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.Request.Header.Get("token")
@@ -62,6 +89,19 @@ func (c *Product) Store() gin.HandlerFunc {
 	}
 }
 
+// StoreProducts godoc
+// @Summary Store products
+// @Tags Products
+// @Description update products
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Param id  path string true "id"
+// @Param product body request true "Product to update"
+// @Success 200 {object} web.Responsec
+// @Failure 400 {object} web.Response "We need ID!!"
+// @Failure 404 {object} web.Response "Can not find ID"
+// @Router /products/{id} [put]
 func (c *Product) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.GetHeader("token")
@@ -108,6 +148,19 @@ func (c *Product) Update() gin.HandlerFunc {
 	}
 }
 
+// StoreProducts godoc
+// @Summary Store products
+// @Tags Products
+// @Description update products
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Param id  path string true "id"
+// @Param product body requestName true "Product to updateName"
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.Response "We need ID!!"
+// @Failure 404 {object} web.Response "Can not find ID"
+// @Router /products/{id} [patch]
 func (c *Product) UpdateName() gin.HandlerFunc {
 
 	return func(ctx *gin.Context) {
@@ -121,7 +174,7 @@ func (c *Product) UpdateName() gin.HandlerFunc {
 			ctx.JSON(401, web.NewResponse(401, nil, "ID inválido"))
 			return
 		}
-		var req request
+		var req requestName
 		if err := ctx.ShouldBindJSON(&req); err != nil {
 			ctx.JSON(400, web.NewResponse(400, nil, err.Error()))
 			return
@@ -140,6 +193,18 @@ func (c *Product) UpdateName() gin.HandlerFunc {
 	}
 }
 
+// StoreProducts godoc
+// @Summary Store products
+// @Tags Products
+// @Description update products
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Param id  path string true "id"
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.Response "We need ID!!"
+// @Failure 404 {object} web.Response "Can not find ID"
+// @Router /products/{id} [delete]
 func (c *Product) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.GetHeader("token")

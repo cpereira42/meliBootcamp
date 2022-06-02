@@ -8,10 +8,10 @@
  },
  {
   "id": 2,
-  "name": "LG",
-  "tipo": "TV",
-  "count": 5,
-  "price": 5000
+  "name": "string",
+  "tipo": "string",
+  "count": 1,
+  "price": 1
  },
  {
   "id": 4,
