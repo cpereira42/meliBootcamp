@@ -6,6 +6,9 @@ import (
 
 type repositoryRam struct{}
 
+var ps []Product = []Product{}
+var lastID int
+
 func NewRepositoryRam() Repository {
 	return &repositoryRam{}
 }

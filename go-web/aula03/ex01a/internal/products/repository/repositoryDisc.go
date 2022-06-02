@@ -41,7 +41,6 @@ func (r *repositoryDisc) Store(id int, name, tipo string, count int, price float
 	if err := r.db.Write(ps); err != nil {
 		return Product{}, err
 	}
-	//lastID = p.ID
 	return p, nil
 }
 

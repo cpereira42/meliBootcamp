@@ -8,9 +8,6 @@ type Product struct {
 	Price float64 `json:"price"`
 }
 
-var ps []Product = []Product{}
-var lastID int
-
 type Repository interface {
 	GetAll() ([]Product, error)
 	Store(id int, name, tipo string, count int, price float64) (Product, error)
