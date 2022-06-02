@@ -46,12 +46,16 @@ func (r *repositoryDisc) Store(id int, name, tipo string, count int, price float
 }
 
 func (r *repositoryDisc) Update(id int, name, tipo string, count int, price float64) (Product, error) {
-
+	var ps []Product
+	r.db.Read(&ps)
 	p := Product{Name: name, Tipo: tipo, Count: count, Price: price}
 	for i := range ps {
 		if ps[i].ID == id {
 			p.ID = id
 			ps[i] = p
+			if err := r.db.Write(ps); err != nil {
+				return Product{}, err
+			}
 			return p, nil
 		}
 	}
@@ -59,11 +63,15 @@ func (r *repositoryDisc) Update(id int, name, tipo string, count int, price floa
 }
 
 func (r *repositoryDisc) UpdateName(id int, name string) (Product, error) {
-	var p Product
+	var ps []Product
+	r.db.Read(&ps)
 	for i := range ps {
 		if ps[i].ID == id {
 			ps[i].Name = name
-			p = ps[i]
+			p := ps[i]
+			if err := r.db.Write(ps); err != nil {
+				return Product{}, err
+			}
 			return p, nil
 		}
 	}
@@ -72,10 +80,15 @@ func (r *repositoryDisc) UpdateName(id int, name string) (Product, error) {
 
 func (r *repositoryDisc) Delete(id int) error {
 	var index int
+	var ps []Product
+	r.db.Read(&ps)
 	for i := range ps {
 		if ps[i].ID == id {
 			index = i
 			ps = append(ps[:index], ps[index+1:]...)
+			if err := r.db.Write(ps); err != nil {
+				return err
+			}
 			return nil
 		}
 	}
