@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/meliBootcamp/go-web/aula03/ex01a/internal/products"
+	products "github.com/meliBootcamp/go-web/aula03/ex01a/internal/products/repository"
 	"github.com/meliBootcamp/go-web/aula03/ex01a/pkg/web"
 )
 

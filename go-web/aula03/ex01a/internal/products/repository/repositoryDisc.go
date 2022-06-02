@@ -6,35 +6,23 @@ import (
 	"github.com/meliBootcamp/go-web/aula03/ex01a/pkg/store"
 )
 
-var ps []Product = []Product{}
-var lastID int
-
-type Repository interface {
-	GetAll() ([]Product, error)
-	Store(id int, name, tipo string, count int, price float64) (Product, error)
-	LastID() (int, error)
-	Update(id int, name, tipo string, count int, price float64) (Product, error)
-	UpdateName(id int, name string) (Product, error)
-	Delete(id int) error
-}
-
-type repository struct {
+type repositoryDisc struct {
 	db store.Store
 }
 
-func NewRepository(db store.Store) Repository {
-	return &repository{
+func NewRepositoryDisc(db store.Store) Repository {
+	return &repositoryDisc{
 		db: db,
 	}
 }
 
-func (r *repository) GetAll() ([]Product, error) {
+func (r *repositoryDisc) GetAll() ([]Product, error) {
 	var ps []Product
 	r.db.Read(&ps)
 	return ps, nil
 }
 
-func (r *repository) LastID() (int, error) {
+func (r *repositoryDisc) LastID() (int, error) {
 	var ps []Product
 	if err := r.db.Read(&ps); err != nil {
 		return 0, err
@@ -45,7 +33,7 @@ func (r *repository) LastID() (int, error) {
 	return ps[len(ps)-1].ID, nil
 }
 
-func (r *repository) Store(id int, name, tipo string, count int, price float64) (Product, error) {
+func (r *repositoryDisc) Store(id int, name, tipo string, count int, price float64) (Product, error) {
 	var ps []Product
 	r.db.Read(&ps)
 	p := Product{id, name, tipo, count, price}
@@ -57,7 +45,7 @@ func (r *repository) Store(id int, name, tipo string, count int, price float64) 
 	return p, nil
 }
 
-func (r *repository) Update(id int, name, tipo string, count int, price float64) (Product, error) {
+func (r *repositoryDisc) Update(id int, name, tipo string, count int, price float64) (Product, error) {
 
 	p := Product{Name: name, Tipo: tipo, Count: count, Price: price}
 	for i := range ps {
@@ -70,7 +58,7 @@ func (r *repository) Update(id int, name, tipo string, count int, price float64)
 	return Product{}, fmt.Errorf("produto %d não encontrado", id)
 }
 
-func (r *repository) UpdateName(id int, name string) (Product, error) {
+func (r *repositoryDisc) UpdateName(id int, name string) (Product, error) {
 	var p Product
 	for i := range ps {
 		if ps[i].ID == id {
@@ -82,7 +70,7 @@ func (r *repository) UpdateName(id int, name string) (Product, error) {
 	return Product{}, fmt.Errorf("produto %d não encontrado", id)
 }
 
-func (r *repository) Delete(id int) error {
+func (r *repositoryDisc) Delete(id int) error {
 	var index int
 	for i := range ps {
 		if ps[i].ID == id {

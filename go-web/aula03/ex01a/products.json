@@ -26,5 +26,12 @@
   "tipo": "TV",
   "count": 5,
   "price": 5000
+ },
+ {
+  "id": 5,
+  "name": "Golang",
+  "tipo": "Livro",
+  "count": 50,
+  "price": 63.5
  }
 ]
