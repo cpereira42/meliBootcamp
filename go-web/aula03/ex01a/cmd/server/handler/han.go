@@ -56,6 +56,27 @@ func (c *Product) GetAll() gin.HandlerFunc {
 	}
 }
 
+func (c *Product) GetId() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		token := ctx.Request.Header.Get("token")
+		if token != os.Getenv("TOKEN") {
+			ctx.JSON(401, web.NewResponse(401, nil, "token inválido"))
+			return
+		}
+		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+		if err != nil {
+			ctx.JSON(401, web.NewResponse(401, nil, "ID inválido"))
+			return
+		}
+		p, err := c.service.GetId(int(id))
+		if err != nil {
+			ctx.JSON(401, web.NewResponse(401, nil, err.Error()))
+			return
+		}
+		ctx.JSON(200, web.NewResponse(200, p, ""))
+	}
+}
+
 // StoreProducts godoc
 // @Summary Store products
 // @Tags Products

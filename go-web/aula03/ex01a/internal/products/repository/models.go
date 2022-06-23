@@ -10,6 +10,7 @@ type Product struct {
 
 type Repository interface {
 	GetAll() ([]Product, error)
+	GetId(id int) (Product, error)
 	Store(id int, name, tipo string, count int, price float64) (Product, error)
 	LastID() (int, error)
 	Update(id int, name, tipo string, count int, price float64) (Product, error)

@@ -2,6 +2,7 @@ package products
 
 type Service interface {
 	GetAll() ([]Product, error)
+	GetId(id int) (Product, error)
 	Store(name, tipo string, count int, price float64) (Product, error)
 	Update(id int, name, tipo string, count int, price float64) (Product, error)
 	UpdateName(id int, name string) (Product, error)
@@ -26,6 +27,14 @@ func (s *service) GetAll() ([]Product, error) {
 	return ps, nil
 }
 
+func (s *service) GetId(id int) (Product, error) {
+	ps, err := s.repository.GetId(id)
+	if err != nil {
+		return Product{}, err
+	}
+	return ps, nil
+}
+
 func (s *service) Store(name, tipo string, count int, price float64) (Product, error) {
 	lastID, err := s.repository.LastID()
 	if err != nil {
@@ -42,14 +51,28 @@ func (s *service) Store(name, tipo string, count int, price float64) (Product, e
 }
 
 func (s *service) Update(id int, name, tipo string, count int, price float64) (Product, error) {
+	product, err := s.repository.Update(id, name, tipo, count, price)
+	if err != nil {
+		return Product{}, err
+	}
 
-	return s.repository.Update(id, name, tipo, count, price)
+	return product, nil
 }
 
 func (s *service) UpdateName(id int, name string) (Product, error) {
-	return s.repository.UpdateName(id, name)
+	product, err := s.repository.UpdateName(id, name)
+	if err != nil {
+		return Product{}, err
+	}
+
+	return product, nil
 }
 
 func (s *service) Delete(id int) error {
-	return s.repository.Delete(id)
+	err := s.repository.Delete(id)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

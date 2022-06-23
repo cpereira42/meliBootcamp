@@ -1,0 +1,16 @@
+[
+ {
+  "id": 1,
+  "name": "Toshiba",
+  "tipo": "TV",
+  "count": 6,
+  "price": 7000
+ },
+ {
+  "id": 2,
+  "name": "Sony",
+  "tipo": "TV",
+  "count": 5,
+  "price": 1000
+ }
+]

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -13,7 +12,6 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/meliBootcamp/go-web/aula03/ex01a/cmd/server/handler"
 	products "github.com/meliBootcamp/go-web/aula03/ex01a/internal/products/repository"
-	"github.com/meliBootcamp/go-web/aula03/ex01a/pkg/store"
 	"github.com/meliBootcamp/go-web/aula03/ex01a/pkg/web"
 )
 
@@ -28,30 +26,41 @@ import (
 //@licence.url http://www.apache.org/licenses/LICENCE-2.0.html
 func main() {
 
-	repo := products.NewRepositoryRam()
+	//repo := products.NewRepositoryRam()
 
-	err := godotenv.Load("../../.env")
+	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatal("Não foi possível abrir o log")
 	}
 
-	if len(os.Args) > 1 && os.Args[1] == "Disc" {
+	/*if len(os.Args) > 1 && os.Args[1] == "Disc" {
 		fmt.Println("Vamos gravar no arquivo")
 		db := store.New(store.FileType, "../../products.json")
 		repo = products.NewRepositoryDisc(db)
 	} else {
 		fmt.Println("Vamos gravar na memória")
+	}*/
+
+	conn, err2 := products.ConnectDB()
+	if err2 != nil {
+		log.Fatal("could not open the conection: ", err2)
 	}
+
+	repo := products.NewRepositoryDB(conn)
+
+	//db := store.New(store.FileType, "products.json")
+	//repo := products.NewRepositoryDisc(db)
 
 	service := products.NewService(repo)
 	p := handler.NewProduct(service)
 	r := gin.Default()
-	docs.SwaggerInfo.Host = os.Getenv("HOST")
+	docs.SwaggerInfo.Host = os.Getenv("HOST_DB")
 	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	pr := r.Group("/products")
 	pr.Use(TokenAuthMiddleware())
 	pr.POST("/", p.Store())
 	pr.GET("/", p.GetAll())
+	pr.GET("/:id", p.GetId())
 	pr.PUT("/:id", p.Update())
 	pr.PATCH("/:id", p.UpdateName())
 	pr.DELETE("/:id", p.Delete())

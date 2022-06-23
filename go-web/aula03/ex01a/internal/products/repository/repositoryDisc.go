@@ -22,6 +22,11 @@ func (r *repositoryDisc) GetAll() ([]Product, error) {
 	return ps, nil
 }
 
+func (r *repositoryDisc) GetId(id int) (Product, error) {
+	var ps Product
+	return ps, nil
+}
+
 func (r *repositoryDisc) LastID() (int, error) {
 	var ps []Product
 	if err := r.db.Read(&ps); err != nil {

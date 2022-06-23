@@ -17,6 +17,11 @@ func (r *repositoryRam) GetAll() ([]Product, error) {
 	return ps, nil
 }
 
+func (r *repositoryRam) GetId(id int) (Product, error) {
+	p := Product{1, "name", "tipo", 5, 700}
+	return p, nil
+}
+
 func (r *repositoryRam) LastID() (int, error) {
 	return lastID, nil
 }

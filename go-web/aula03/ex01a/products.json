@@ -26,5 +26,12 @@
   "tipo": "Livro",
   "count": 50,
   "price": 63.5
+ },
+ {
+  "id": 6,
+  "name": "Tester",
+  "tipo": "funcional",
+  "count": 10,
+  "price": 50
  }
 ]
